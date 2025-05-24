@@ -51,38 +51,6 @@ button {
 	border-radius: 12px;
 }
 
-/* #numbtns {
-	border: 1px solid black;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	flex-wrap: wrap;
-}
-
-#optbtns {
-	border: 1px solid black;
-} */
-
-/* .opbtn,
-#clearbtn,
-#backspacebtn {
-	width: 100%;
-	font-size: 40px;
-	text-align: center;
-} */
-
-/* .numbtn,
-#decimalbtn,
-#equalbtn {
-	width: 33%;
-	font-size: 40px;
-} */
-
-/* #otherbtns {
-	display: flex;
-	flex-direction: row;
-} */
-
 .opbtn {
 	background-color: #e5e5e5;
 }

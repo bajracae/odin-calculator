@@ -39,7 +39,7 @@ const operate = function (a, operator, b) {
 	return result;
 };
 
-const getNumber = function () {
+const numberbtns = function () {
 	displayField = document.querySelector("#display");
 	displayField.textContent = "0";
 	numButtons = document.querySelectorAll(".numbtn");
@@ -47,7 +47,11 @@ const getNumber = function () {
 	numButtons.forEach((button) => {
 		button.addEventListener("click", () => {
 			if (operator === "") {
-				if (firstNumber == 0 || firstNumber == lastResult) {
+				if (
+					firstNumber == 0 ||
+					firstNumber == lastResult ||
+					displayField.textContent == "0"
+				) {
 					displayField.textContent = button.textContent;
 				} else {
 					displayField.textContent += button.textContent;
@@ -61,12 +65,11 @@ const getNumber = function () {
 				}
 				secondNumber = displayField.textContent;
 			}
-			console.log(firstNumber, operator, secondNumber);
 		});
 	});
 };
 
-const getOperator = function () {
+const operatorbtns = function () {
 	opButtons = document.querySelectorAll(".opbtn");
 
 	opButtons.forEach((button) => {
@@ -76,7 +79,7 @@ const getOperator = function () {
 	});
 };
 
-const clearCalc = function () {
+const clearbtn = function () {
 	clearButton = document.querySelector("#clearbtn");
 
 	clearButton.addEventListener("click", () => {
@@ -87,22 +90,26 @@ const clearCalc = function () {
 	});
 };
 
-const equal = function () {
-	equalbutton = document.querySelector("#equalbtn");
+const equalbtn = function () {
+	equalButton = document.querySelector("#equalbtn");
 
-	equalbutton.addEventListener("click", () => {
+	equalButton.addEventListener("click", () => {
 		if (firstNumber !== "" && operator == "/" && secondNumber == "0") {
-			displayField.textContent = "Dividing by zero is a sin";
+			displayField.textContent = "cannot divide by zero";
 			lastResult = "";
 			firstNumber = "";
 			operator = "";
 			secondNumber = "";
 		} else if (firstNumber !== "" && operator !== "" && secondNumber !== "") {
-			const result = operate(
-				parseInt(firstNumber),
+			let result = operate(
+				parseFloat(firstNumber),
 				operator,
-				parseInt(secondNumber)
+				parseFloat(secondNumber)
 			);
+
+			if (result % 1 !== 0) {
+				result = result.toFixed(2);
+			}
 
 			displayField.textContent = result;
 			lastResult = result;
@@ -113,11 +120,14 @@ const equal = function () {
 	});
 };
 
-const backspace = function () {
-	backspacebutton = document.querySelector("#backspacebtn");
+const backspacebtn = function () {
+	backspaceButton = document.querySelector("#backspacebtn");
 
-	backspacebutton.addEventListener("click", () => {
-		displayField.textContent = displayField.textContent.slice(0, -1);
+	backspaceButton.addEventListener("click", () => {
+		if (displayField.textContent != "0" && displayField.textContent != "") {
+			displayField.textContent = displayField.textContent.slice(0, -1);
+		}
+
 		if (operator === "") {
 			firstNumber = displayField.textContent;
 		} else {
@@ -126,100 +136,53 @@ const backspace = function () {
 	});
 };
 
-const main = function () {
-	getNumber();
-	getOperator();
-	clearCalc();
-	equal();
-	backspace();
+const decimalbtn = function () {
+	decimalButton = document.querySelector("#decimalbtn");
 
-	console.log(parseInt(firstNumber), operator, parseInt(secondNumber));
+	decimalButton.addEventListener("click", () => {
+		if (!displayField.textContent.includes(decimalButton.textContent)) {
+			displayField.textContent += decimalButton.textContent;
+		}
+
+		if (operator == "") {
+			firstNumber = displayField.textContent;
+		} else {
+			secondNumber = displayField.textContent;
+		}
+	});
+};
+
+const signbtn = function () {
+	signButton = document.querySelector("#signbtn");
+
+	signButton.addEventListener("click", () => {
+		if (displayField.textContent !== "0") {
+			if (!displayField.textContent.includes("-")) {
+				displayField.textContent = "-" + displayField.textContent;
+			} else {
+				displayField.textContent.replace("-", "");
+			}
+		}
+
+		if (operator == "") {
+			firstNumber = displayField.textContent;
+		} else {
+			secondNumber = displayField.textContent;
+		}
+	});
+};
+
+const main = function () {
+	numberbtns();
+	operatorbtns();
+	clearbtn();
+	equalbtn();
+	backspacebtn();
+	decimalbtn();
+	signbtn();
 };
 
 main();
-
-// const newLogic = function () {
-// 	displayField = document.querySelector("#display");
-// 	numButtons = document.querySelectorAll(".numbtn");
-// 	opButtons = document.querySelectorAll(".opbtn");
-// 	clearButton = document.querySelector("#clearbtn");
-
-// 	first = 0;
-// 	operator = "";
-// 	second = 0;
-
-// 	numButtons.forEach((button) => {
-// 		button.addEventListener("click", () => {
-// 			displayField.textContent += button.innerHTML;
-// 		});
-// 	});
-
-// 	clearButton.addEventListener("click", () => {
-// 		first = 0;
-// 		operator = "";
-// 		second = 0;
-// 		displayField.textContent = "";
-// 	});
-
-// 	opButtons.forEach((button) => {
-// 		button.addEventListener("click", () => {
-// 			first = displayField.textContent;
-// 			operator = button.innerHTML;
-// 		});
-// 	});
-// };
-
-// newLogic();
-
-// const logic = function () {
-// 	displayField = document.querySelector("#display");
-// 	numbuttons = document.querySelectorAll(".numbtn");
-// 	opbuttons = document.querySelectorAll(".opbtn");
-// 	equalbutton = document.querySelector("#equalbtn");
-// 	cleanbutton = document.querySelector("#clearbtn");
-
-// 	validOperators = ["+", "-", "*", "/"];
-
-// 	first = null;
-// 	operator = "";
-// 	second = null;
-
-// 	numbuttons.forEach((button) => {
-// 		button.addEventListener("click", () => {
-// 			displayField.value += button.innerText;
-// 		});
-// 	});
-
-// 	opbuttons.forEach((opbutton) => {
-// 		opbutton.addEventListener("click", () => {
-// 			if (first == null) {
-// 				first = displayField.value;
-// 			}
-// 			operator = opbutton.innerText;
-// 			displayField.value = null;
-// 		});
-// 	});
-
-// 	equalbutton.addEventListener("click", () => {
-// 		if (second == null && displayField.value != "") {
-// 			second = displayField.value;
-// 		}
-// 		results = operate(parseInt(first), operator, parseInt(second));
-// 		displayField.value = results;
-// 		first = displayField.value;
-// 		operator = null;
-// 		second = null;
-// 	});
-
-// 	cleanbutton.addEventListener("click", () => {
-// 		displayField.value = null;
-// 		first = null;
-// 		operator = "";
-// 		second = null;
-// 	});
-// };
-
-// logic();
 
 // Do not edit below this line
 module.exports = {
